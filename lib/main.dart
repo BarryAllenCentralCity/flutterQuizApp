@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'quiz_brain.dart';
 
 QuizBrain quizBrain = QuizBrain();
@@ -34,27 +35,56 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   List<Icon> scoreKeeper = [];
 
+  answerCorrection(){
+
+  }
+
   void checkAnswer(bool userPickedAnswer) {
     bool correctAnswer = quizBrain.getAnswer();
+
+    setState(() {
+      if (quizBrain.isFinished() == true){
+        Alert(
+          context: context,
+          title: 'Alert! You have reached the end of the quiz!',
+          desc: 'Awesome',
+          buttons: [
+            DialogButton(
+              onPressed: () {
+                setState(() {
+                  quizBrain.reset();
+                  Navigator.pop(context);
+                  scoreKeeper = [];
+                });
+              },
+              width: 120,
+              child: const Text(
+                "RESTART",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+            )
+          ],
+        ).show();
+      }
+      else{}
+
     if (userPickedAnswer == correctAnswer) {
-      print("Correct!");
+      //print("Correct!");
       scoreKeeper.add(
-        Icon(
+        const Icon(
           Icons.check,
           color: Colors.green,
         ),
       );
     } else {
-      print("wrong");
+      //print("wrong");
       scoreKeeper.add(
-        Icon(
+        const Icon(
           Icons.close,
           color: Colors.red,
         ),
       );
     }
-    //The user picked true.
-    setState(() {
       quizBrain.nextQuestion();
     });
   }
@@ -68,12 +98,12 @@ class _QuizPageState extends State<QuizPage> {
         Expanded(
           flex: 5,
           child: Padding(
-            padding: EdgeInsets.all(10.0),
+            padding: const EdgeInsets.all(10.0),
             child: Center(
               child: Text(
                 quizBrain.getQuestion(),
                 textAlign: TextAlign.center,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 25.0,
                   color: Colors.white,
                 ),
@@ -106,30 +136,28 @@ class _QuizPageState extends State<QuizPage> {
           child: Padding(
             padding: const EdgeInsets.all(15.0),
             child: ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateColor.resolveWith(
-                      (states) => Color(Colors.red.value)),
+              style: ButtonStyle(
+                backgroundColor: MaterialStateColor.resolveWith(
+                    (states) => Color(Colors.red.value)),
+              ),
+              child: const Text(
+                'False',
+                style: TextStyle(
+                  fontSize: 20.0,
+                  color: Colors.white,
                 ),
-                child: const Text(
-                  'False',
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    color: Colors.white,
-                  ),
-                ),
-                onPressed: () {
-                  //The user picked false.
-                  //print(questionNumber);
-                  checkAnswer(false);
-                }),
+              ),
+              onPressed: () {
+                //The user picked false.
+                //print(questionNumber);
+                checkAnswer(false);
+              },
+            ),
           ),
         ),
-        SingleChildScrollView(
-      child: Row(
-        children: scoreKeeper,
-      ),
-    ),
-
+        Row(
+          children: scoreKeeper,
+        ),
       ],
     );
   }

@@ -6,12 +6,12 @@ class QuizBrain {
 
   int _questionNumber = 0;
 
-  List<Question> _questionBank = [
+  final List<Question> _questionBank = [
     Question('Some cats are actually allergic to humans', true),
     Question('You can lead a cow down stairs but not up stairs.', false),
     Question('Approximately one quarter of human bones are in the feet.', true),
     Question('A slug\'s blood is green.', true),
-    Question('Buzz Aldrin\'s mother\'s maiden name was \"Moon\".', true),
+    Question('Buzz Aldrin\'s mother\'s maiden name was "Moon".', true),
     Question('It is illegal to pee in the Ocean in Portugal.', true),
     Question(
         'No piece of square dry paper can be folded in half more than 7 times.',
@@ -25,7 +25,7 @@ class QuizBrain {
     Question(
         'The total surface area of two human lungs is approximately 70 square metres.',
         true),
-    Question('Google was originally called \"Backrub\".', true),
+    Question('Google was originally called "Backrub".', true),
     Question(
         'Chocolate affects a dog\'s heart and nervous system; a few ounces are enough to kill a small dog.',
         true),
@@ -46,6 +46,20 @@ class QuizBrain {
 
   bool getAnswer(){
     return _questionBank[_questionNumber].questionAnswer;
+  }
+
+  bool isFinished() {
+    if (_questionNumber == _questionBank.length-1){
+      print('true');
+      return true;
+    } else {
+      print('false');
+      return false;
+    }
+  }
+
+  reset() {
+    _questionNumber = 0;
   }
 
 }
